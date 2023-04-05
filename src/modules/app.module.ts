@@ -13,7 +13,7 @@ import { TrackModule } from "@modules/track/track.module";
       `mongodb+srv://${process.env.DBLOGIN}:${process.env.DBPASSWORD}@main-cluster.ngd83az.mongodb.net/?retryWrites=true&w=majority`,
     ),
     UserModule,
-    TrackModule,
+    // TrackModule,
   ],
 })
 export class AppModule {}

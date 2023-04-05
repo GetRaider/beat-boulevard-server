@@ -1,7 +1,7 @@
-import { IUsersModel } from "@interfaces/models/users.model";
+import { IUserModel } from "@interfaces/models/users.model";
 import { IsOptional, IsString } from "class-validator";
 
-export class UsersModel implements IUsersModel {
+export class UserModel implements IUserModel {
   @IsString()
   readonly id: string;
 

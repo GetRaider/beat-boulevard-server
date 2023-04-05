@@ -1,14 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 export type UserDocument = IUserEntity & Document;
 
 export interface IUserEntity {
   readonly _id: string;
   readonly email: string;
+  readonly temporaryPassword: string;
   readonly name?: string;
   readonly age?: number;
-  readonly isMarried?: boolean;
 }
 
 @Schema({
@@ -25,20 +26,25 @@ export interface IUserEntity {
   },
 })
 export class UserEntity implements IUserEntity {
-  @Prop({ type: String, required: true })
+  @Prop({
+    type: String,
+    default: function genUUID() {
+      return uuidv4();
+    },
+  })
   readonly _id: string;
 
   @Prop({ type: String, required: true })
   readonly email: string;
+
+  @Prop({ type: String, required: true })
+  readonly temporaryPassword: string;
 
   @Prop({ type: String })
   readonly name?: string;
 
   @Prop(Number)
   readonly age?: number;
-
-  @Prop(Boolean)
-  readonly isMarried?: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserEntity);
