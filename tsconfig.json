@@ -1,21 +1,54 @@
 {
   "compilerOptions": {
+    "lib": ["ES2020"],
     "module": "commonjs",
-    "declaration": true,
+    "target": "ES2020",
+    "moduleResolution": "node",
+
+    "strict": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "allowJs": true,
+
+    "declaration": false,
     "removeComments": true,
+    "sourceMap": true,
+
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
+
+    "incremental": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "paths": {
+      "@adapters/*": ["./src/adapters/*"],
+      "@config/*": ["./src/config/*"],
+      "@constants": ["./src/constants"],
+      "@constants/*": ["./src/constants/*"],
+      "@decorators": ["./src/decorators"],
+      "@decorators/*": ["./src/decorators/*"],
+      "@interceptors": ["./src/interceptors"],
+      "@interceptors/*": ["./src/interceptors/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@pipes/*": ["./src/pipes/*"],
+      "@pipes": ["./src/pipes"],
+      "@enums/*": ["./src/enums/*"],
+      "@enums": ["./src/enums"],
+      "@types/*": ["./src/types/*"],
+      "@types": ["./src/types"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@interfaces": ["./src/interfaces"],
+      "@models/*": ["./src/models/*"],
+      "@models": ["./src/models"],
+      "@dto/*": ["./src/dto/*"],
+      "@dto": ["./src/dto"],
+      "@utils/*": ["./src/utils/*"],
+      "@utils": ["./src/utils"]
+    }
   }
 }
