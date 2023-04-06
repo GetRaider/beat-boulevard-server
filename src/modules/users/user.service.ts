@@ -10,14 +10,15 @@ import {
   CreateUserResponseDto,
 } from "@modules/users/dto/user.dto";
 import { randomUUID } from "crypto";
-import { IUserModel } from "@interfaces/models/users.model";
 import { plainToClass } from "class-transformer";
+import { IUserModel } from "@interfaces/models/users.model";
 import { UserModel } from "@modules/users/models/user.model";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class UserService {
   constructor(
-    @Injectable(UserEntity.name) private userModel: Model<UserDocument>,
+    @InjectModel(UserEntity.name) private userModel: Model<UserDocument>,
   ) {}
   async createUser(
     createUserDto: CreateUserRequestDto,
