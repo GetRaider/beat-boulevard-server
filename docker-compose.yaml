@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  api:
+    image: beat-boulevard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    command: npm run start:dev
+    container_name: api
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+      - ~/.bash_history:/root/.bash_history
+
+networks:
+  default:
+    name: docker-network

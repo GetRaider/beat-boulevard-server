@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
-import { v4 as uuidv4 } from "uuid";
+import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
+import {Document} from "mongoose";
+import {v4 as uuidv4} from "uuid";
 
 export type UserDocument = IUserEntity & Document;
 
@@ -19,16 +19,17 @@ export interface IUserEntity {
   strict: false,
   timestamps: { createdAt: true, updatedAt: true },
   toJSON: {
-    transform: function (doc, ret) {
+    transform: (ret) => {
       ret.id = ret._id;
       delete ret._id;
     },
   },
 })
+
 export class UserEntity implements IUserEntity {
   @Prop({
     type: String,
-    default: function genUUID() {
+    default: () => {
       return uuidv4();
     },
   })
@@ -43,7 +44,7 @@ export class UserEntity implements IUserEntity {
   @Prop({ type: String })
   readonly name?: string;
 
-  @Prop(Number)
+  @Prop({type: Number})
   readonly age?: number;
 }
 

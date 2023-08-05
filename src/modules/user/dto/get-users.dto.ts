@@ -6,12 +6,14 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { UserModel } from "@modules/user/models/user.model";
+import {
+  IGetUsersArgs,
+  IGetUsersResult,
+} from "@interfaces/dto/users/get-users.dto";
+import {IUserModel} from "@interfaces/models/user.model";
 
-import { ICreateUserArgs, ICreateUserResult } from "@interfaces/dto/user.dto";
-import { IUserModel } from "@interfaces/models/users.model";
-import { UserModel } from "@modules/users/models/user.model";
-
-export class CreateUserRequestDto implements ICreateUserArgs {
+export class GetUsersRequestDto implements IGetUsersArgs {
   @IsEmail()
   readonly email: string;
 
@@ -27,9 +29,9 @@ export class CreateUserRequestDto implements ICreateUserArgs {
   readonly age?: number;
 }
 
-export class CreateUserResponseDto implements ICreateUserResult {
+export class GetUsersResponseDto implements IGetUsersResult {
   @IsObject()
   @Type(() => UserModel)
   @ValidateNested()
-  readonly user: IUserModel;
+  readonly users: Array<IUserModel>;
 }

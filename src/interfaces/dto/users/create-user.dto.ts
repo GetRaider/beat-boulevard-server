@@ -1,4 +1,4 @@
-import { IUserModel } from "@interfaces/models/users.model";
+import {IUserModel} from "@interfaces/models/user.model";
 
 export interface ICreateUserArgs {
   readonly email: string;
