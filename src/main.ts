@@ -1,15 +1,15 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "@modules/app.module";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import {NestFactory} from "@nestjs/core";
+import {AppModule} from "@modules/app.module";
+import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
-async function start() {
+void (async function start() {
   try {
     const app = await NestFactory.create(AppModule);
 
     const PORT = process.env.PORT || 8080;
 
     await app.listen(PORT, () =>
-      console.log(`Server has started on the ${PORT}`),
+      console.info(`Server has started on the ${PORT}`),
     );
     // todo Swagger:
     // const config = new DocumentBuilder()
@@ -22,5 +22,4 @@ async function start() {
   } catch (error) {
     console.error(`Server has not started due to: ${error.message}`);
   }
-}
-start();
+})();
