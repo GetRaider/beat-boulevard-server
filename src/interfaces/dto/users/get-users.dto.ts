@@ -1,10 +1,10 @@
 import {IUserModel} from "@interfaces/models/user.model";
 
 export interface IGetUsersArgs {
-  readonly email?: string;
-  readonly temporaryPassword?: string;
-  readonly name?: string;
-  readonly age?: number;
+  readonly id?: Array<string>;
+  readonly email?: Array<string>;
+  readonly name?: Array<string>;
+  readonly age?: Array<number>;
 }
 
 export interface IGetUsersResult {

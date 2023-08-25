@@ -7,7 +7,7 @@ export type UserDocument = IUserEntity & Document;
 export interface IUserEntity {
   readonly _id: string;
   readonly email: string;
-  readonly temporaryPassword: string;
+  readonly password: string;
   readonly name?: string;
   readonly age?: number;
 }
@@ -17,31 +17,23 @@ export interface IUserEntity {
   autoCreate: true,
   versionKey: false,
   strict: false,
-  timestamps: { createdAt: true, updatedAt: true },
-  toJSON: {
-    transform: (ret) => {
-      ret.id = ret._id;
-      delete ret._id;
-    },
-  },
+  timestamps: {createdAt: true, updatedAt: true},
 })
-
 export class UserEntity implements IUserEntity {
   @Prop({
     type: String,
-    default: () => {
-      return uuidv4();
-    },
+    required: true,
+    default: () => uuidv4(),
   })
   readonly _id: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({type: String, required: true})
   readonly email: string;
 
-  @Prop({ type: String, required: true })
-  readonly temporaryPassword: string;
+  @Prop({type: String, required: true})
+  readonly password: string;
 
-  @Prop({ type: String })
+  @Prop({type: String})
   readonly name?: string;
 
   @Prop({type: Number})

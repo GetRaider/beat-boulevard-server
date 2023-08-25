@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -10,27 +11,24 @@ import {Type} from "class-transformer";
 import {UserModel} from "@modules/user/models/user.model";
 import {IUserModel} from "@interfaces/models/user.model";
 import {
-  ICreateUserArgs,
-  ICreateUserResult,
-} from "@interfaces/dto/users/create-user.dto";
+  IUpdateUserArgs,
+  IUpdateUserResult,
+} from "@interfaces/dto/users/update-user.dto";
 
-export class CreateUserRequestDto implements ICreateUserArgs {
+export class UpdateUserRequestDto implements IUpdateUserArgs {
   @IsEmail()
   readonly email: string;
-
-  @IsString()
-  readonly password: string;
 
   @IsString()
   @IsOptional()
   readonly name?: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
   readonly age?: number;
 }
 
-export class CreateUserResponseDto implements ICreateUserResult {
+export class UpdateUserResponseDto implements IUpdateUserResult {
   @IsObject()
   @Type(() => UserModel)
   @ValidateNested()
