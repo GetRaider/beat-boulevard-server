@@ -1,32 +1,34 @@
-import {
-  IsEmail,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator";
-import { Type } from "class-transformer";
-import { UserModel } from "@modules/user/models/user.model";
+import {IsArray, IsObject, IsOptional, ValidateNested} from "class-validator";
+import {Transform, Type} from "class-transformer";
+
+import {UserModel} from "@modules/user/models/user.model";
+import {IUserModel} from "@interfaces/models/user.model";
+import {propertyUtils} from "@utils/property.utils";
 import {
   IGetUsersArgs,
   IGetUsersResult,
 } from "@interfaces/dto/users/get-users.dto";
-import {IUserModel} from "@interfaces/models/user.model";
 
 export class GetUsersRequestDto implements IGetUsersArgs {
-  @IsEmail()
-  readonly email: string;
-
-  @IsString()
-  readonly temporaryPassword: string;
-
-  @IsString()
+  @Transform(propertyUtils.transformValueToArray)
   @IsOptional()
-  readonly name?: string;
+  @IsArray()
+  readonly id?: Array<string>;
 
-  @IsString()
+  @Transform(propertyUtils.transformValueToArray)
   @IsOptional()
-  readonly age?: number;
+  @IsArray()
+  readonly email?: Array<string>;
+
+  @Transform(propertyUtils.transformValueToArray)
+  @IsOptional()
+  @IsArray()
+  readonly name?: Array<string>;
+
+  @Transform(propertyUtils.transformValueToArray)
+  @IsOptional()
+  @IsArray()
+  readonly age?: Array<number>;
 }
 
 export class GetUsersResponseDto implements IGetUsersResult {

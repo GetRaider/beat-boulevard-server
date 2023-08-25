@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator";
+import {IsOptional, IsString} from "class-validator";
 import {IUserModel} from "@interfaces/models/user.model";
 
 export class UserModel implements IUserModel {
