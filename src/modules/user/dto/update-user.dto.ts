@@ -13,7 +13,7 @@ import {IUserModel} from "@interfaces/models/user.model";
 import {
   IUpdateUserArgs,
   IUpdateUserResult,
-} from "@interfaces/dto/users/update-user.dto";
+} from "@interfaces/dto/user/update-user.dto";
 
 export class UpdateUserRequestDto implements IUpdateUserArgs {
   @IsEmail()

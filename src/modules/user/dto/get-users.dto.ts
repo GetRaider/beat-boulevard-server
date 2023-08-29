@@ -7,7 +7,7 @@ import {propertyUtils} from "@utils/property.utils";
 import {
   IGetUsersArgs,
   IGetUsersResult,
-} from "@interfaces/dto/users/get-users.dto";
+} from "@interfaces/dto/user/get-users.dto";
 
 export class GetUsersRequestDto implements IGetUsersArgs {
   @Transform(propertyUtils.transformValueToArray)
