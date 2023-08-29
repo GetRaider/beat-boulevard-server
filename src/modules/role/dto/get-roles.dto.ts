@@ -18,7 +18,7 @@ export class GetRolesRequestDto implements IGetRolesArgs {
   @Transform(propertyUtils.transformValueToArray)
   @IsOptional()
   @IsArray()
-  readonly value: Array<string>;
+  readonly value?: Array<string>;
 
   @Transform(propertyUtils.transformValueToArray)
   @IsOptional()
