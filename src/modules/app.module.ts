@@ -4,6 +4,7 @@ import {Module} from "@nestjs/common";
 
 import {UserModule} from "@modules/user/user.module";
 import {processEnv} from "../helpers/processEnv.helper";
+import {RoleModule} from "@modules/role/role.module";
 
 const {DBLOGIN, DBPASSWORD} = processEnv;
 
@@ -19,6 +20,7 @@ const encodedPassword = encodeURIComponent(`${DBPASSWORD}`);
       `mongodb+srv://${encodedUsername}:${encodedPassword}@main-cluster.ngd83az.mongodb.net/`,
     ),
     UserModule,
+    RoleModule,
   ],
 })
 export class AppModule {}

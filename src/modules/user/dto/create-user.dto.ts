@@ -12,7 +12,7 @@ import {IUserModel} from "@interfaces/models/user.model";
 import {
   ICreateUserArgs,
   ICreateUserResult,
-} from "@interfaces/dto/users/create-user.dto";
+} from "@interfaces/dto/user/create-user.dto";
 
 export class CreateUserRequestDto implements ICreateUserArgs {
   @IsEmail()
