@@ -4,8 +4,9 @@ config();
 
 interface processEnvHelperInterface {
   PORT: string;
-  DBLOGIN: string;
-  DBPASSWORD: string;
+  DB_LOGIN: string;
+  DB_PASSWORD: string;
+  SECRET: string;
 }
 
 export const processEnv = process.env as unknown as processEnvHelperInterface;

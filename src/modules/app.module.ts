@@ -5,11 +5,12 @@ import {Module} from "@nestjs/common";
 import {UserModule} from "@modules/user/user.module";
 import {processEnv} from "../helpers/processEnv.helper";
 import {RoleModule} from "@modules/role/role.module";
+import {AuthModule} from "@modules/auth/auth.module";
 
-const {DBLOGIN, DBPASSWORD} = processEnv;
+const {DB_LOGIN, DB_PASSWORD} = processEnv;
 
-const encodedUsername = encodeURIComponent(`${DBLOGIN}`);
-const encodedPassword = encodeURIComponent(`${DBPASSWORD}`);
+const encodedUsername = encodeURIComponent(`${DB_LOGIN}`);
+const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ const encodedPassword = encodeURIComponent(`${DBPASSWORD}`);
     MongooseModule.forRoot(
       `mongodb+srv://${encodedUsername}:${encodedPassword}@main-cluster.ngd83az.mongodb.net/`,
     ),
+    AuthModule,
     UserModule,
     RoleModule,
   ],
