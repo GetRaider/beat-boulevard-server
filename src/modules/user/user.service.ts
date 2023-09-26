@@ -1,15 +1,15 @@
 import {Injectable, Logger} from "@nestjs/common";
+import {FilterQuery, Model} from "mongoose";
+import {randomUUID} from "crypto";
+import {plainToInstance} from "class-transformer";
+import {InjectModel} from "@nestjs/mongoose";
 
 import {
   IUserEntity,
   UserDocument,
   UserEntity,
 } from "@modules/user/schemas/user.schema";
-import {FilterQuery, Model} from "mongoose";
-import {randomUUID} from "crypto";
-import {plainToInstance} from "class-transformer";
 import {UserModel} from "@modules/user/models/user.model";
-import {InjectModel} from "@nestjs/mongoose";
 import {IUserModel} from "@interfaces/models/user.model";
 import {
   GetUsersRequestDto,
@@ -23,6 +23,7 @@ import {
   UpdateUserRequestDto,
   UpdateUserResponseDto,
 } from "@modules/user/dto/update-user.dto";
+import {GetUserByEmailRequestDto} from "@modules/user/dto/get-user-by-email.dto";
 
 @Injectable()
 export class UserService {
@@ -34,16 +35,18 @@ export class UserService {
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const {email, password, name, age} = dto;
-    const newUser: UserDocument = new this.userModel<IUserEntity>({
+    const newDocument: UserDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
       email,
       password,
       name,
       age,
     });
-    const savedUser = await newUser.save();
-    this.logger.warn(`Following user has been saved: ${savedUser}`);
-    return {user: plainToInstance(UserModel, savedUser.toJSON<IUserModel>())};
+    const savedDocument = await newDocument.save();
+    this.logger.warn(`Following user has been saved: ${savedDocument}`);
+    return {
+      user: plainToInstance(UserModel, savedDocument.toJSON<IUserModel>()),
+    };
   }
 
   async getByQuery(query: GetUsersRequestDto): Promise<GetUsersResponseDto> {
@@ -61,13 +64,22 @@ export class UserService {
       ...(ageArr ? {age: {$in: ageArr}} : {}),
     };
 
-    const foundUsers = await this.userModel.find(filterQuery);
+    const foundDocuments = await this.userModel.find(filterQuery);
 
     return {
-      users: foundUsers.map(foundUser =>
-        plainToInstance(UserModel, foundUser.toJSON<IUserModel>()),
+      users: foundDocuments.map(foundDocument =>
+        plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
       ),
     };
+  }
+
+  async getOneByEmail(dto: GetUserByEmailRequestDto): Promise<UserDocument> {
+    const {email} = dto;
+    return this.userModel.findOne({email});
+    // todo add work with DTOs
+    // return {
+    //   user: plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
+    // };
   }
 
   async updateById(
@@ -78,7 +90,9 @@ export class UserService {
       new: true,
     });
 
-    return {user: plainToInstance(UserModel, updatedUser.toJSON<IUserModel>())};
+    return {
+      user: plainToInstance(UserModel, updatedUser.toJSON<IUserModel>()),
+    };
   }
 
   async deleteById(id: string): Promise<void> {
