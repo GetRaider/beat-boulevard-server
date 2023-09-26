@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from "@nestjs/common";
 
 import {UserService} from "@modules/user/user.service";
@@ -24,6 +25,7 @@ import {
   UpdateUserRequestDto,
   UpdateUserResponseDto,
 } from "@modules/user/dto/update-user.dto";
+import {AuthGuard} from "@modules/auth/auth.guard";
 
 @Controller("/users")
 export class UserController {
@@ -37,6 +39,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   async get(@Query() query: GetUsersRequestDto): Promise<GetUsersResponseDto> {
     return this.userService.getByQuery(query);
   }

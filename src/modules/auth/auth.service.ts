@@ -1,23 +1,32 @@
 import {
-  Body,
   HttpException,
   HttpStatus,
   Injectable,
-  Post,
   UnauthorizedException,
 } from "@nestjs/common";
 import {UserService} from "@modules/user/user.service";
-import {SignUpRequestDto} from "@modules/auth/dto/sign-up.dto";
 import bcryptjs from "bcryptjs";
-import {
-  CreateUserRequestDto,
-  CreateUserResponseDto,
-} from "@modules/user/dto/create-user.dto";
-import {UserModel} from "@modules/user/models/user.model";
-import {ICreateUserResult} from "@interfaces/dto/user/create-user.dto";
-import {IUserModel} from "@interfaces/models/user.model";
 import {JwtService} from "@nestjs/jwt";
-import {UserModule} from "@modules/user/user.module";
+import {
+  GetTokenRequestDto,
+  GetTokenResponseDto,
+} from "@modules/auth/dto/get-token.dto";
+import {
+  ValidateUserRequestDto,
+  ValidateUserResponseDto,
+} from "@modules/auth/dto/validate-user.dto";
+import {
+  GenerateTokenRequestDto,
+  GenerateTokenResponseDto,
+} from "@modules/auth/dto/generate-token.dto";
+import {
+  RegistrationRequestDto,
+  RegistrationResponseDto,
+} from "@modules/auth/dto/registration.dto";
+import {plainToInstance} from "class-transformer";
+import {UserModel} from "@modules/user/models/user.model";
+import {IUserModel} from "@interfaces/models/user.model";
+import {LoginRequestDto, LoginResponseDto} from "@modules/auth/dto/login.dto";
 
 @Injectable()
 export class AuthService {
@@ -26,11 +35,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registration(dto: CreateUserRequestDto): Promise<any> {
+  async registration(
+    dto: RegistrationRequestDto,
+  ): Promise<RegistrationResponseDto> {
     const {email, password} = dto;
-    const foundDocument = await this.userService.getByEmail({email});
+    const foundDocument = await this.userService.getOneByEmail({email});
     if (foundDocument) {
-      console.log(foundDocument);
       throw new HttpException(
         `User with ${email} email already exist`,
         HttpStatus.BAD_REQUEST,
@@ -44,32 +54,36 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async getToken(user: UserModel) {
-    const {email} = user;
-    const foundDocument = await this.userService.getByEmail({email});
-    if (foundDocument) {
-      return this.generateToken(user);
-    }
+  async login(dto: LoginRequestDto): Promise<LoginResponseDto> {
+    return this.validateUser(dto);
   }
 
-  async login(dto: CreateUserRequestDto): Promise<unknown> {
-    const user = await this.validateUser(dto);
-    return user;
+  async getToken(dto: GetTokenRequestDto): Promise<GetTokenResponseDto> {
+    return (await this.validateUser(dto)) && this.generateToken(dto);
   }
 
-  private async generateToken(user: UserModel) {
-    const {id, email} = user;
+  private async generateToken(
+    dto: GenerateTokenRequestDto,
+  ): Promise<GenerateTokenResponseDto> {
+    const {id, email} = dto;
     return {
       token: this.jwtService.sign({email, id}),
     };
   }
-  private async validateUser(dto: CreateUserRequestDto) {
+  private async validateUser(
+    dto: ValidateUserRequestDto,
+  ): Promise<ValidateUserResponseDto> {
     const {email, password} = dto;
-    const foundUser = await this.userService.getByEmail({email});
-    const passwordEquals = await bcryptjs.compare(password, foundUser.password);
-    if (!foundUser || !passwordEquals) {
+    const foundDocument = await this.userService.getOneByEmail({email});
+    const passwordEquals = await bcryptjs.compare(
+      password,
+      foundDocument.password,
+    );
+    if (!foundDocument || !passwordEquals) {
       throw new UnauthorizedException({message: "Incorrect email or password"});
     }
-    return foundUser;
+    return {
+      user: plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
+    };
   }
 }

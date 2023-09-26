@@ -23,10 +23,7 @@ import {
   UpdateUserRequestDto,
   UpdateUserResponseDto,
 } from "@modules/user/dto/update-user.dto";
-import {
-  GetUserByEmailRequestDto,
-  GetUserByEmailResponseDto,
-} from "@modules/user/dto/get-user-by-email.dto";
+import {GetUserByEmailRequestDto} from "@modules/user/dto/get-user-by-email.dto";
 
 @Injectable()
 export class UserService {
@@ -76,10 +73,9 @@ export class UserService {
     };
   }
 
-  async getByEmail(dto: GetUserByEmailRequestDto): Promise<UserDocument> {
+  async getOneByEmail(dto: GetUserByEmailRequestDto): Promise<UserDocument> {
     const {email} = dto;
-    const foundDocument = await this.userModel.findOne({email});
-    return foundDocument;
+    return this.userModel.findOne({email});
     // todo add work with DTOs
     // return {
     //   user: plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
@@ -94,7 +90,9 @@ export class UserService {
       new: true,
     });
 
-    return {user: plainToInstance(UserModel, updatedUser.toJSON<IUserModel>())};
+    return {
+      user: plainToInstance(UserModel, updatedUser.toJSON<IUserModel>()),
+    };
   }
 
   async deleteById(id: string): Promise<void> {

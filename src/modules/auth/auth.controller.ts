@@ -1,29 +1,35 @@
 import {Body, Controller, Post} from "@nestjs/common";
 import {AuthService} from "@modules/auth/auth.service";
-import {SignUpRequestDto} from "@modules/auth/dto/sign-up.dto";
 import {
-  SignInRequestDto,
-  SignInResponseDto,
-} from "@modules/auth/dto/sign-in.dto";
-import {CreateUserRequestDto} from "@modules/user/dto/create-user.dto";
-import {UserModel} from "@modules/user/models/user.model";
+  RegistrationRequestDto,
+  RegistrationResponseDto,
+} from "@modules/auth/dto/registration.dto";
+import {LoginRequestDto, LoginResponseDto} from "@modules/auth/dto/login.dto";
+import {
+  GetTokenRequestDto,
+  GetTokenResponseDto,
+} from "@modules/auth/dto/get-token.dto";
 
 @Controller("/auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post("/registration")
-  async registration(@Body() dto: CreateUserRequestDto): Promise<unknown> {
+  async registration(
+    @Body() dto: RegistrationRequestDto,
+  ): Promise<RegistrationResponseDto> {
     return this.authService.registration(dto);
   }
 
   @Post("/login")
-  async login(@Body() dto: CreateUserRequestDto): Promise<unknown> {
+  async login(@Body() dto: LoginRequestDto): Promise<LoginResponseDto> {
     return this.authService.login(dto);
   }
 
   @Post("/token")
-  async getToken(@Body() dto: UserModel): Promise<unknown> {
+  async getToken(
+    @Body() dto: GetTokenRequestDto,
+  ): Promise<GetTokenResponseDto> {
     return this.authService.getToken(dto);
   }
 }
