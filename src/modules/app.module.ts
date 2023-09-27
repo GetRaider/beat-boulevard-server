@@ -7,7 +7,7 @@ import {processEnv} from "../helpers/processEnv.helper";
 import {RoleModule} from "@modules/role/role.module";
 import {AuthModule} from "@modules/auth/auth.module";
 
-const {DB_LOGIN, DB_PASSWORD} = processEnv;
+const {DB_BASE_URL, DB_CLUSTER_URL, DB_LOGIN, DB_PASSWORD} = processEnv;
 
 const encodedUsername = encodeURIComponent(`${DB_LOGIN}`);
 const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
@@ -18,7 +18,7 @@ const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     MongooseModule.forRoot(
-      `mongodb+srv://${encodedUsername}:${encodedPassword}@main-cluster.ngd83az.mongodb.net/`,
+      `${DB_BASE_URL}${encodedUsername}:${encodedPassword}${DB_CLUSTER_URL}`,
     ),
     AuthModule,
     UserModule,
