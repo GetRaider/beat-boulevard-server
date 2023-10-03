@@ -1,3 +1,5 @@
+import {IAuthModel} from "@interfaces/models/auth.model";
+
 export interface IGetTokenArgs {
   readonly id: string;
   readonly email: string;
@@ -5,5 +7,5 @@ export interface IGetTokenArgs {
 }
 
 export interface IGetTokenResult {
-  readonly token: string;
+  readonly token: IAuthModel;
 }

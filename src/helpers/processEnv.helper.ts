@@ -2,7 +2,7 @@ import {config} from "dotenv";
 
 config();
 
-interface processEnvHelperInterface {
+interface IProcessEnvHelper {
   PORT: string;
   DB_BASE_URL: string;
   DB_CLUSTER_URL: string;
@@ -11,4 +11,4 @@ interface processEnvHelperInterface {
   SECRET: string;
 }
 
-export const processEnv = process.env as unknown as processEnvHelperInterface;
+export const processEnv = process.env as unknown as IProcessEnvHelper;
