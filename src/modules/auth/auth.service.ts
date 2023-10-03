@@ -7,6 +7,7 @@ import {
 import {UserService} from "@modules/user/user.service";
 import bcryptjs from "bcryptjs";
 import {JwtService} from "@nestjs/jwt";
+
 import {
   GetTokenRequestDto,
   GetTokenResponseDto,
@@ -27,6 +28,7 @@ import {plainToInstance} from "class-transformer";
 import {UserModel} from "@modules/user/models/user.model";
 import {IUserModel} from "@interfaces/models/user.model";
 import {LoginRequestDto, LoginResponseDto} from "@modules/auth/dto/login.dto";
+import {AuthModel} from "@modules/auth/models/auth.model";
 
 @Injectable()
 export class AuthService {
@@ -66,8 +68,9 @@ export class AuthService {
     dto: GenerateTokenRequestDto,
   ): Promise<GenerateTokenResponseDto> {
     const {id, email} = dto;
+    const token = this.jwtService.sign({email, id});
     return {
-      token: this.jwtService.sign({email, id}),
+      token: plainToInstance(AuthModel, token),
     };
   }
   private async validateUser(
