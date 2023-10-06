@@ -23,7 +23,10 @@ import {
   UpdateUserRequestDto,
   UpdateUserResponseDto,
 } from "@modules/user/dto/update-user.dto";
-import {GetUserByEmailRequestDto} from "@modules/user/dto/get-user-by-email.dto";
+import {
+  GetUserByLoginRequestDto,
+  GetUserByLoginResponseDto,
+} from "@modules/user/dto/get-user-by-login.dto";
 
 @Injectable()
 export class UserService {
@@ -34,10 +37,10 @@ export class UserService {
   ) {}
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    const {email, password, name, age} = dto;
-    const newDocument: UserDocument = new this.userModel<IUserEntity>({
+    const {login, password, name, age} = dto;
+    const newDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
-      email,
+      login,
       password,
       name,
       age,
@@ -49,17 +52,14 @@ export class UserService {
     };
   }
 
-  async getByQuery(query: GetUsersRequestDto): Promise<GetUsersResponseDto> {
-    const {
-      id: idArr,
-      email: emailArr,
-      name: nameArr,
-      age: ageArr,
-    } = query || {};
+  async getByQuery(
+    query: GetUsersRequestDto = {},
+  ): Promise<GetUsersResponseDto> {
+    const {id: idArr, login: loginArr, name: nameArr, age: ageArr} = query;
 
     const filterQuery: FilterQuery<IUserEntity> = {
       ...(idArr ? {_id: {$in: idArr}} : {}),
-      ...(emailArr ? {email: {$in: emailArr}} : {}),
+      ...(loginArr ? {login: {$in: loginArr}} : {}),
       ...(nameArr ? {name: {$in: nameArr}} : {}),
       ...(ageArr ? {age: {$in: ageArr}} : {}),
     };
@@ -73,13 +73,14 @@ export class UserService {
     };
   }
 
-  async getOneByEmail(dto: GetUserByEmailRequestDto): Promise<UserDocument> {
-    const {email} = dto;
-    return this.userModel.findOne({email});
-    // todo add work with DTOs
-    // return {
-    //   user: plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
-    // };
+  async getOneByLogin(
+    dto: GetUserByLoginRequestDto,
+  ): Promise<GetUserByLoginResponseDto> {
+    const {login} = dto;
+    const foundDocument = await this.userModel.findOne({login});
+    return {
+      user: plainToInstance(UserModel, foundDocument?.toJSON<IUserModel>()),
+    };
   }
 
   async updateById(
@@ -100,6 +101,6 @@ export class UserService {
   }
 
   async deleteAll(): Promise<void> {
-    await this.userModel.deleteMany({email: {$gte: "@gmail"}});
+    await this.userModel.deleteMany({login: {$gte: "@gmail"}});
   }
 }

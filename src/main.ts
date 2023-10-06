@@ -1,14 +1,15 @@
 import {NestFactory} from "@nestjs/core";
 
 import {AppModule} from "@modules/app.module";
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {HttpExceptionFilter} from "@utils/httpExceptionFilter.utils";
+import {Logger} from "@nestjs/common";
 
 void (async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
 
     const PORT = process.env.PORT || 8080;
-
+    app.useGlobalFilters(new HttpExceptionFilter(new Logger()));
     await app.listen(PORT, () =>
       console.info(`Server has started on the ${PORT}`),
     );

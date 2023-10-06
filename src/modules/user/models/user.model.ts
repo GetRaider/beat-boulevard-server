@@ -6,7 +6,7 @@ export class UserModel implements IUserModel {
   readonly id: string;
 
   @IsString()
-  readonly email: string;
+  readonly login: string;
 
   @IsString()
   readonly password: string;

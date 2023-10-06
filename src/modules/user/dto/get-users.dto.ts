@@ -18,7 +18,7 @@ export class GetUsersRequestDto implements IGetUsersArgs {
   @Transform(propertyUtils.transformValueToArray)
   @IsOptional()
   @IsArray()
-  readonly email?: Array<string>;
+  readonly login?: Array<string>;
 
   @Transform(propertyUtils.transformValueToArray)
   @IsOptional()

@@ -1,4 +1,4 @@
-import {IsEmail, IsObject, IsString, ValidateNested} from "class-validator";
+import {IsObject, IsString, ValidateNested} from "class-validator";
 import {
   IValidateUserArgs,
   IValidateUserResult,
@@ -8,8 +8,8 @@ import {Type} from "class-transformer";
 import {UserModel} from "@modules/user/models/user.model";
 
 export class ValidateUserRequestDto implements IValidateUserArgs {
-  @IsEmail()
-  readonly email: string;
+  @IsString()
+  readonly login: string;
   @IsString()
   readonly password: string;
 }

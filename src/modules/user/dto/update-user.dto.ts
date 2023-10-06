@@ -1,5 +1,4 @@
 import {
-  IsEmail,
   IsNumber,
   IsObject,
   IsOptional,
@@ -16,8 +15,8 @@ import {
 } from "@interfaces/dto/user/update-user.dto";
 
 export class UpdateUserRequestDto implements IUpdateUserArgs {
-  @IsEmail()
-  readonly email: string;
+  @IsString()
+  readonly login: string;
 
   @IsString()
   @IsOptional()
