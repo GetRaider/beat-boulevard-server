@@ -11,7 +11,7 @@ export class GetTokenRequestDto implements IGetTokenArgs {
   @IsString()
   readonly id: string;
   @IsString()
-  readonly email: string;
+  readonly login: string;
   @IsString()
   readonly password: string;
 }

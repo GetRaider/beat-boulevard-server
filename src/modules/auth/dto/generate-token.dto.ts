@@ -1,4 +1,4 @@
-import {IsEmail, IsObject, IsString, ValidateNested} from "class-validator";
+import {IsObject, IsString, ValidateNested} from "class-validator";
 import {
   IGenerateTokenArgs,
   IGenerateTokenResult,
@@ -10,8 +10,8 @@ import {IAuthModel} from "@interfaces/models/auth.model";
 export class GenerateTokenRequestDto implements IGenerateTokenArgs {
   @IsString()
   readonly id: string;
-  @IsEmail()
-  readonly email: string;
+  @IsString()
+  readonly login: string;
 }
 
 export class GenerateTokenResponseDto implements IGenerateTokenResult {

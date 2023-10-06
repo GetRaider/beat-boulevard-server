@@ -25,10 +25,9 @@ import {
   RegistrationResponseDto,
 } from "@modules/auth/dto/registration.dto";
 import {plainToInstance} from "class-transformer";
-import {UserModel} from "@modules/user/models/user.model";
-import {IUserModel} from "@interfaces/models/user.model";
 import {LoginRequestDto, LoginResponseDto} from "@modules/auth/dto/login.dto";
 import {AuthModel} from "@modules/auth/models/auth.model";
+import {UserModel} from "@modules/user/models/user.model";
 
 @Injectable()
 export class AuthService {
@@ -40,11 +39,11 @@ export class AuthService {
   async registration(
     dto: RegistrationRequestDto,
   ): Promise<RegistrationResponseDto> {
-    const {email, password} = dto;
-    const foundDocument = await this.userService.getOneByEmail({email});
+    const {login, password} = dto;
+    const foundDocument = await this.userService.getOneByLogin({login});
     if (foundDocument) {
       throw new HttpException(
-        `User with ${email} email already exist`,
+        `User with ${login} login already exist`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -67,8 +66,8 @@ export class AuthService {
   private async generateToken(
     dto: GenerateTokenRequestDto,
   ): Promise<GenerateTokenResponseDto> {
-    const {id, email} = dto;
-    const token = this.jwtService.sign({email, id});
+    const {id, login} = dto;
+    const token = this.jwtService.sign({login, id});
     return {
       token: plainToInstance(AuthModel, token),
     };
@@ -76,17 +75,17 @@ export class AuthService {
   private async validateUser(
     dto: ValidateUserRequestDto,
   ): Promise<ValidateUserResponseDto> {
-    const {email, password} = dto;
-    const foundDocument = await this.userService.getOneByEmail({email});
-    const passwordEquals = await bcryptjs.compare(
+    const {login, password} = dto;
+    const {user} = await this.userService.getOneByLogin({login});
+    const isPasswordEqual = await bcryptjs.compare(
       password,
-      foundDocument.password,
+      user?.password || "",
     );
-    if (!foundDocument || !passwordEquals) {
-      throw new UnauthorizedException({message: "Incorrect email or password"});
+    if (!user || !isPasswordEqual) {
+      throw new UnauthorizedException({message: "Incorrect login or password"});
     }
     return {
-      user: plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
+      user: plainToInstance(UserModel, user),
     };
   }
 }

@@ -6,7 +6,7 @@ export type UserDocument = IUserEntity & Document;
 
 export interface IUserEntity {
   readonly _id: string;
-  readonly email: string;
+  readonly login: string;
   readonly password: string;
   readonly name?: string;
   readonly age?: number;
@@ -28,7 +28,7 @@ export class UserEntity implements IUserEntity {
   readonly _id: string;
 
   @Prop({type: String, required: true})
-  readonly email: string;
+  readonly login: string;
 
   @Prop({type: String, required: true})
   readonly password: string;

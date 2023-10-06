@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsObject,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator";
+import {IsObject, IsOptional, IsString, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 
 import {UserModel} from "@modules/user/models/user.model";
@@ -15,8 +9,8 @@ import {
 } from "@interfaces/dto/user/create-user.dto";
 
 export class CreateUserRequestDto implements ICreateUserArgs {
-  @IsEmail()
-  readonly email: string;
+  @IsString()
+  readonly login: string;
 
   @IsString()
   readonly password: string;
