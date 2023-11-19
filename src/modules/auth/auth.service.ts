@@ -47,10 +47,9 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const encryptedPassword = await bcryptjs.hash(password, 5);
     const {user} = await this.userService.create({
       ...dto,
-      password: encryptedPassword,
+      password,
     });
     return this.generateToken(user);
   }
@@ -72,6 +71,7 @@ export class AuthService {
       token: plainToInstance(AuthModel, token),
     };
   }
+
   private async validateUser(
     dto: ValidateUserRequestDto,
   ): Promise<ValidateUserResponseDto> {

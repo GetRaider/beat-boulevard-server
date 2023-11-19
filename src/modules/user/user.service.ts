@@ -3,6 +3,7 @@ import {FilterQuery, Model} from "mongoose";
 import {randomUUID} from "crypto";
 import {plainToInstance} from "class-transformer";
 import {InjectModel} from "@nestjs/mongoose";
+import bcryptjs from "bcryptjs";
 
 import {
   IUserEntity,
@@ -38,10 +39,11 @@ export class UserService {
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const {login, password, name, age} = dto;
+    const encryptedPassword = await bcryptjs.hash(password, 5);
     const newDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
       login,
-      password,
+      password: encryptedPassword,
       name,
       age,
     });
