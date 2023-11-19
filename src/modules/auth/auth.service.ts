@@ -41,7 +41,7 @@ export class AuthService {
   ): Promise<RegistrationResponseDto> {
     const {login, password} = dto;
     const foundDocument = await this.userService.getOneByLogin({login});
-    if (foundDocument) {
+    if (foundDocument.user) {
       throw new HttpException(
         `User with ${login} login already exist`,
         HttpStatus.BAD_REQUEST,
