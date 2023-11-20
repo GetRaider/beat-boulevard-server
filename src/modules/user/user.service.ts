@@ -1,4 +1,4 @@
-import {Injectable, Logger} from "@nestjs/common";
+import {HttpException, HttpStatus, Injectable, Logger} from "@nestjs/common";
 import {FilterQuery, Model} from "mongoose";
 import {randomUUID} from "crypto";
 import {plainToInstance} from "class-transformer";
@@ -40,6 +40,13 @@ export class UserService {
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const {login, password, name, age} = dto;
     const encryptedPassword = await bcryptjs.hash(password, 5);
+    const foundDocument = await this.getOneByLogin({login});
+    if (foundDocument.user) {
+      throw new HttpException(
+          `User with ${login} login already exist`,
+          HttpStatus.BAD_REQUEST,
+      );
+    }
     const newDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
       login,

@@ -3,29 +3,29 @@ import {Transform, Type} from "class-transformer";
 
 import {UserModel} from "@modules/user/models/user.model";
 import {IUserModel} from "@interfaces/models/user.model";
-import {propertyUtils} from "@utils/property.utils";
+import {propertyHelper} from "../../../helpers/property.helper";
 import {
   IGetUsersArgs,
   IGetUsersResult,
 } from "@interfaces/dto/user/get-users.dto";
 
 export class GetUsersRequestDto implements IGetUsersArgs {
-  @Transform(propertyUtils.transformValueToArray)
+  @Transform(propertyHelper.transformValueToArray)
   @IsOptional()
   @IsArray()
   readonly id?: Array<string>;
 
-  @Transform(propertyUtils.transformValueToArray)
+  @Transform(propertyHelper.transformValueToArray)
   @IsOptional()
   @IsArray()
   readonly login?: Array<string>;
 
-  @Transform(propertyUtils.transformValueToArray)
+  @Transform(propertyHelper.transformValueToArray)
   @IsOptional()
   @IsArray()
   readonly name?: Array<string>;
 
-  @Transform(propertyUtils.transformValueToArray)
+  @Transform(propertyHelper.transformValueToArray)
   @IsOptional()
   @IsArray()
   readonly age?: Array<number>;

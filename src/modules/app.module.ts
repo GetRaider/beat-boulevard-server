@@ -7,7 +7,7 @@ import {processEnv} from "../helpers/processEnv.helper";
 import {RoleModule} from "@modules/role/role.module";
 import {AuthModule} from "@modules/auth/auth.module";
 import {APP_FILTER} from "@nestjs/core";
-import {HttpExceptionFilter} from "@utils/httpExceptionFilter.utils";
+import {HttpExceptionFilter} from "../helpers/httpExceptionFilter.helper";
 
 const {DB_BASE_URL, DB_CLUSTER_URL, DB_LOGIN, DB_PASSWORD} = processEnv;
 

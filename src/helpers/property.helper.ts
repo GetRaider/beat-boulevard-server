@@ -1,4 +1,4 @@
-export const propertyUtils = {
+export const propertyHelper = {
   transformValueToArray({value}) {
     return value.split(",");
   },
