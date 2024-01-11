@@ -26,25 +26,33 @@ import {
   UpdateUserResponseDto,
 } from "@modules/user/dto/update-user.dto";
 import {AuthGuard} from "@modules/auth/auth.guard";
+import {Roles} from "@modules/role/decorators/role.decorator";
+import {Role} from "@interfaces/enums/roles.enums";
+import {RoleGuard} from "@modules/role/role.guard";
+import {RoleService} from "@modules/role/role.service";
 
 @Controller("/users")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  // To create user without credentials to test
+  // @UseGuards(AuthGuard)
   async create(
     @Body() dto: CreateUserRequestDto,
   ): Promise<CreateUserResponseDto> {
     return this.userService.create(dto);
   }
 
+  @Roles(Role.admin)
+  @UseGuards(AuthGuard, RoleGuard)
   @Get()
-  @UseGuards(AuthGuard)
   async get(@Query() query: GetUsersRequestDto): Promise<GetUsersResponseDto> {
     return this.userService.getByQuery(query);
   }
 
   @Put(":id")
+  @UseGuards(AuthGuard)
   async update(
     @Param("id") id: string,
     @Body() dto: UpdateUserRequestDto,
@@ -53,12 +61,14 @@ export class UserController {
   }
 
   @Delete(":id")
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param("id") id: string): Promise<void> {
     return this.userService.deleteById(id);
   }
 
   @Delete()
+  // @UseGuards(AuthGuard)
   async deleteAll(): Promise<void> {
     return this.userService.deleteAll();
   }

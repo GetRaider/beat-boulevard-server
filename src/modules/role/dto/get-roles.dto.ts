@@ -8,6 +8,7 @@ import {
 } from "@interfaces/dto/role/get-roles.dto";
 import {RoleModel} from "@modules/role/models/role.model";
 import {IRoleModel} from "@interfaces/models/role.model";
+import {Role} from "@interfaces/enums/roles.enums";
 
 export class GetRolesRequestDto implements IGetRolesArgs {
   @Transform(propertyHelper.transformValueToArray)
@@ -18,7 +19,7 @@ export class GetRolesRequestDto implements IGetRolesArgs {
   @Transform(propertyHelper.transformValueToArray)
   @IsOptional()
   @IsArray()
-  readonly value?: Array<string>;
+  readonly value?: Array<Role>;
 
   @Transform(propertyHelper.transformValueToArray)
   @IsOptional()

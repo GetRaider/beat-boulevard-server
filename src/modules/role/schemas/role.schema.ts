@@ -1,12 +1,13 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Document} from "mongoose";
 import {v4 as uuidv4} from "uuid";
+import {Role} from "@interfaces/enums/roles.enums";
 
 export type RoleDocument = IRoleEntity & Document;
 
 export interface IRoleEntity {
   readonly _id: string;
-  readonly value: string;
+  readonly value: Role;
   readonly description?: string;
 }
 
@@ -26,7 +27,7 @@ export class RoleEntity implements IRoleEntity {
   readonly _id: string;
 
   @Prop({type: String})
-  readonly value: string;
+  readonly value: Role;
 
   @Prop({type: String, required: false})
   readonly description?: string;

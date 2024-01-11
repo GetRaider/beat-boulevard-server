@@ -28,6 +28,10 @@ import {
   GetUserByLoginRequestDto,
   GetUserByLoginResponseDto,
 } from "@modules/user/dto/get-user-by-login.dto";
+import {Role} from "@interfaces/enums/roles.enums";
+import {RoleService} from "@modules/role/role.service";
+import {IRoleModel} from "@interfaces/models/role.model";
+import * as console from "console";
 
 @Injectable()
 export class UserService {
@@ -35,22 +39,27 @@ export class UserService {
     @InjectModel(UserEntity.name)
     private readonly userModel: Model<UserDocument>,
     private readonly logger: Logger,
+    private readonly roleService: RoleService,
   ) {}
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
-    const {login, password, name, age} = dto;
+    const foundRolesDocument = await this.roleService.getByQuery({
+      id: ["e8bbf285-8544-4d1c-815c-a2b18546e384"],
+    });
+    const {login, password, roles = foundRolesDocument.roles, name, age} = dto;
     const encryptedPassword = await bcryptjs.hash(password, 5);
     const foundDocument = await this.getOneByLogin({login});
     if (foundDocument.user) {
       throw new HttpException(
-          `User with ${login} login already exist`,
-          HttpStatus.BAD_REQUEST,
+        `User with ${login} login already exist`,
+        HttpStatus.BAD_REQUEST,
       );
     }
     const newDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
       login,
       password: encryptedPassword,
+      roles,
       name,
       age,
     });
@@ -74,7 +83,6 @@ export class UserService {
     };
 
     const foundDocuments = await this.userModel.find(filterQuery);
-
     return {
       users: foundDocuments.map(foundDocument =>
         plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
