@@ -13,11 +13,12 @@ import {
   IUpdateRoleResult,
 } from "@interfaces/dto/role/update-role.dto";
 import {IRoleModel} from "@interfaces/models/role.model";
+import {Role} from "@interfaces/enums/roles.enums";
 
 export class UpdateRoleRequestDto implements IUpdateRoleArgs {
   @IsString()
   @IsOptional()
-  readonly value?: string;
+  readonly value?: Role;
 
   @IsNumber()
   @IsOptional()

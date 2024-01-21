@@ -1,7 +1,8 @@
 import {IRoleModel} from "@interfaces/models/role.model";
+import {Role} from "@interfaces/enums/roles.enums";
 
 export interface ICreateRoleArgs {
-  readonly value?: string;
+  readonly value?: Role;
   readonly description?: string;
 }
 

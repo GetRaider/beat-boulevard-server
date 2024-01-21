@@ -7,6 +7,7 @@ import {
   ICreateUserArgs,
   ICreateUserResult,
 } from "@interfaces/dto/user/create-user.dto";
+import {RoleModel} from "@modules/role/models/role.model";
 
 export class CreateUserRequestDto implements ICreateUserArgs {
   @IsString()
@@ -14,6 +15,8 @@ export class CreateUserRequestDto implements ICreateUserArgs {
 
   @IsString()
   readonly password: string;
+
+  readonly roles: Array<RoleModel>;
 
   @IsString()
   @IsOptional()

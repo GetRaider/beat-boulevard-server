@@ -1,6 +1,7 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {Document} from "mongoose";
 import {v4 as uuidv4} from "uuid";
+import {IRoleModel} from "@interfaces/models/role.model";
 
 export type UserDocument = IUserEntity & Document;
 
@@ -8,6 +9,7 @@ export interface IUserEntity {
   readonly _id: string;
   readonly login: string;
   readonly password: string;
+  readonly roles: Array<IRoleModel>;
   readonly name?: string;
   readonly age?: number;
 }
@@ -32,6 +34,9 @@ export class UserEntity implements IUserEntity {
 
   @Prop({type: String, required: true})
   readonly password: string;
+
+  @Prop({type: Array<IRoleModel>, required: true})
+  readonly roles: Array<IRoleModel>;
 
   @Prop({type: String})
   readonly name?: string;
