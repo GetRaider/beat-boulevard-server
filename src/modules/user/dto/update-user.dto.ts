@@ -1,4 +1,5 @@
 import {
+  IsNotEmpty,
   IsNumber,
   IsObject,
   IsOptional,
@@ -16,10 +17,12 @@ import {
 
 export class UpdateUserRequestDto implements IUpdateUserArgs {
   @IsString()
+  @IsNotEmpty()
   readonly login: string;
 
   @IsString()
   @IsOptional()
+  @IsNotEmpty()
   readonly name?: string;
 
   @IsNumber()

@@ -8,6 +8,7 @@ import {
   IGetUsersArgs,
   IGetUsersResult,
 } from "@interfaces/dto/user/get-users.dto";
+import {IRoleModel} from "@interfaces/models/role.model";
 
 export class GetUsersRequestDto implements IGetUsersArgs {
   @Transform(propertyHelper.transformValueToArray)
@@ -29,6 +30,10 @@ export class GetUsersRequestDto implements IGetUsersArgs {
   @IsOptional()
   @IsArray()
   readonly age?: Array<number>;
+
+  @IsOptional()
+  @IsArray()
+  readonly roles?: Array<IRoleModel>;
 }
 
 export class GetUsersResponseDto implements IGetUsersResult {

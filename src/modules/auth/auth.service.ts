@@ -28,6 +28,7 @@ import {plainToInstance} from "class-transformer";
 import {LoginRequestDto, LoginResponseDto} from "@modules/auth/dto/login.dto";
 import {AuthModel} from "@modules/auth/models/auth.model";
 import {UserModel} from "@modules/user/models/user.model";
+import * as console from "console";
 
 @Injectable()
 export class AuthService {
@@ -65,8 +66,9 @@ export class AuthService {
   private async generateToken(
     dto: GenerateTokenRequestDto,
   ): Promise<GenerateTokenResponseDto> {
-    const {id, login} = dto;
-    const token = this.jwtService.sign({login, id});
+    const {id, login, roles} = dto;
+    const token = this.jwtService.sign({login, id, roles});
+    console.log("AuthService", {token: token});
     return {
       token: plainToInstance(AuthModel, token),
     };

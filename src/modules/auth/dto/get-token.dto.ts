@@ -1,4 +1,4 @@
-import {IsObject, IsString, ValidateNested} from "class-validator";
+import {IsArray, IsObject, IsString, ValidateNested} from "class-validator";
 import {
   IGetTokenArgs,
   IGetTokenResult,
@@ -6,6 +6,7 @@ import {
 import {Type} from "class-transformer";
 import {AuthModel} from "@modules/auth/models/auth.model";
 import {IAuthModel} from "@interfaces/models/auth.model";
+import {IRoleModel} from "@interfaces/models/role.model";
 
 export class GetTokenRequestDto implements IGetTokenArgs {
   @IsString()
@@ -14,6 +15,8 @@ export class GetTokenRequestDto implements IGetTokenArgs {
   readonly login: string;
   @IsString()
   readonly password: string;
+  @IsArray()
+  readonly roles: Array<IRoleModel>;
 }
 
 export class GetTokenResponseDto implements IGetTokenResult {

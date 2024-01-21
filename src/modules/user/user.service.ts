@@ -31,7 +31,6 @@ import {
 import {Role} from "@interfaces/enums/roles.enums";
 import {RoleService} from "@modules/role/role.service";
 import {IRoleModel} from "@interfaces/models/role.model";
-import * as console from "console";
 
 @Injectable()
 export class UserService {
@@ -73,13 +72,20 @@ export class UserService {
   async getByQuery(
     query: GetUsersRequestDto = {},
   ): Promise<GetUsersResponseDto> {
-    const {id: idArr, login: loginArr, name: nameArr, age: ageArr} = query;
+    const {
+      id: idArr,
+      login: loginArr,
+      name: nameArr,
+      age: ageArr,
+      roles: rolesArr,
+    } = query;
 
     const filterQuery: FilterQuery<IUserEntity> = {
       ...(idArr ? {_id: {$in: idArr}} : {}),
       ...(loginArr ? {login: {$in: loginArr}} : {}),
       ...(nameArr ? {name: {$in: nameArr}} : {}),
       ...(ageArr ? {age: {$in: ageArr}} : {}),
+      ...(rolesArr ? {roles: {$in: rolesArr}} : {}),
     };
 
     const foundDocuments = await this.userModel.find(filterQuery);

@@ -19,26 +19,32 @@ export class RoleGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const roles = this.reflector.get<Array<Role>>("roles", context.getHandler);
-    if (!roles) {
-      return true;
+    try {
+      const requiredRoles = this.reflector.get<Array<Role>>(
+        "roles",
+        context.getHandler(),
+      );
+      if (!requiredRoles.length) {
+        return true;
+      }
+      const request = context.switchToHttp().getRequest();
+      console.log("RoleGuard", request.user);
+      return this.matchRoles(requiredRoles, request.user.roles);
+    } catch (error) {
+      this.logger.error({error: error.message}, "Failed to auth by roles");
+      throw new Error(error);
     }
-    const request = context.switchToHttp().getRequest();
-    // this.logger.warn(`Role: ${roles}, User-role: ${request.user.roles}`);
-    return this.matchRoles(roles, request.user.roles);
   }
 
   private matchRoles(
-    roles: Array<Role>,
+    requiredRoles: Array<Role>,
     userRoles: Array<IRoleModel>,
   ): boolean {
-    // return userRoles.some(userRole => {
-    //   return roles[0] === userRole.value;
-    // });
-    return roles.some(role =>
+    return requiredRoles.some(requiredRole =>
       userRoles.some(userRole => {
-        return role === userRole.value;
+        return requiredRole === userRole.value;
       }),
     );
+    // return userRoles.some(userRole => requiredRoles.includes(userRole.value));
   }
 }

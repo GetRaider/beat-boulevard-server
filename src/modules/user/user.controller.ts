@@ -29,7 +29,6 @@ import {AuthGuard} from "@modules/auth/auth.guard";
 import {Roles} from "@modules/role/decorators/role.decorator";
 import {Role} from "@interfaces/enums/roles.enums";
 import {RoleGuard} from "@modules/role/role.guard";
-import {RoleService} from "@modules/role/role.service";
 
 @Controller("/users")
 export class UserController {
