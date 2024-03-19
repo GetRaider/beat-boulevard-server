@@ -42,16 +42,19 @@ export class AuthService {
   ): Promise<RegistrationResponseDto> {
     const {login, password} = dto;
     const foundDocument = await this.userService.getOneByLogin({login});
+
     if (foundDocument.user) {
       throw new HttpException(
         `User with ${login} login already exist`,
         HttpStatus.BAD_REQUEST,
       );
     }
+
     const {user} = await this.userService.create({
       ...dto,
       password,
     });
+
     return this.generateToken(user);
   }
 
@@ -83,9 +86,11 @@ export class AuthService {
       password,
       user?.password || "",
     );
+
     if (!user || !isPasswordEqual) {
       throw new UnauthorizedException({message: "Incorrect login or password"});
     }
+
     return {
       user: plainToInstance(UserModel, user),
     };

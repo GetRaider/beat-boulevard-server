@@ -8,6 +8,7 @@ import {RoleModule} from "@modules/role/role.module";
 import {AuthModule} from "@modules/auth/auth.module";
 import {APP_FILTER} from "@nestjs/core";
 import {HttpExceptionFilter} from "../helpers/httpExceptionFilter.helper";
+import {S3Module} from "nestjs-s3";
 
 const {DB_BASE_URL, DB_CLUSTER_URL, DB_LOGIN, DB_PASSWORD} = processEnv;
 
@@ -22,6 +23,17 @@ const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
     MongooseModule.forRoot(
       `${DB_BASE_URL}${encodedUsername}:${encodedPassword}${DB_CLUSTER_URL}`,
     ),
+    S3Module.forRoot({
+      config: {
+        credentials: {
+          accessKeyId: "minio",
+          secretAccessKey: "password",
+        },
+        region: "us-east-1",
+        endpoint: "https://humble-gladly-raven.ngrok-free.app",
+        forcePathStyle: true,
+      },
+    }),
     AuthModule,
     UserModule,
     RoleModule,

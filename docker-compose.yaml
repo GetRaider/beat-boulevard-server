@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
   api:
@@ -15,6 +15,46 @@ services:
     volumes:
       - ./:/app
       - ~/.bash_history:/root/.bash_history
+    depends_on:
+      - s3
+
+  s3:
+    image: adobe/s3mock:3.1.0
+    environment:
+      - validKmsKeys=valid-test-key-id
+      - initialBuckets=photo
+      - root=/s3Files
+      - debug=true
+    ports:
+      - "9090:9090"
+
+#  ngrok:
+#    image: wernight/ngrok:armhf
+#    ports:
+#      - "4040:4040"
+#    env_file:
+#      - ./.env
+#    depends_on:
+#      - api
+
+#  mongo-db:
+#    image: mongo:4.0.2
+#    restart: always
+#    ports:
+#      - '27017:27017'
+#    env_file:
+#      - ./${ENV_FILE}
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+#    volumes:
+#      - ./mongo:/data/db
+#    healthcheck:
+#      test: echo 'db.runCommand("ping").ok' | mongo portabl-db:27017 --quiet
+#      interval: 10s
+#      timeout: 10s
+#      retries: 5
+#      start_period: 40s
 
 networks:
   default:

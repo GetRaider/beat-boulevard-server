@@ -101,6 +101,7 @@ export class UserService {
   ): Promise<GetUserByLoginResponseDto> {
     const {login} = dto;
     const foundDocument = await this.userModel.findOne({login});
+
     return {
       user: plainToInstance(UserModel, foundDocument?.toJSON<IUserModel>()),
     };

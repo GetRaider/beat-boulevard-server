@@ -29,10 +29,15 @@ import {AuthGuard} from "@modules/auth/auth.guard";
 import {Roles} from "@modules/role/decorators/role.decorator";
 import {Role} from "@interfaces/enums/roles.enums";
 import {RoleGuard} from "@modules/role/role.guard";
+import {InjectS3} from "nestjs-s3";
+import {S3} from "aws-sdk";
 
 @Controller("/users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    @InjectS3() private readonly s3: S3,
+    private readonly userService: UserService,
+  ) {}
 
   @Post()
   // To create user without credentials to test
@@ -67,8 +72,15 @@ export class UserController {
   }
 
   @Delete()
-  // @UseGuards(AuthGuard)
   async deleteAll(): Promise<void> {
     return this.userService.deleteAll();
+  }
+
+  @Get("/s3")
+  async listBuckets() {
+    await this.s3.listObjects({Bucket: "photo"}, (err, data) => {
+      console.log({err});
+      console.log({data});
+    });
   }
 }

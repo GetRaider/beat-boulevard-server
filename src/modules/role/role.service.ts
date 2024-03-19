@@ -31,6 +31,7 @@ export class RoleService {
     private readonly roleModel: Model<RoleDocument>,
     private readonly logger: Logger,
   ) {}
+
   async create(dto: CreateRoleRequestDto): Promise<CreateRoleResponseDto> {
     const {value, description} = dto;
     const newRole = new this.roleModel<IRoleEntity>({
@@ -42,19 +43,16 @@ export class RoleService {
     this.logger.warn(`Following role has been saved: ${savedRole}`);
     return {role: plainToInstance(RoleModel, savedRole.toJSON<IRoleModel>())};
   }
-  async getByQuery(query: GetRolesRequestDto): Promise<GetRolesResponseDto> {
-    const {
-      id: idArr,
-      value: valueArr,
-      description: descriptionArr,
-    } = query || {};
 
+  async getByQuery(
+    query: GetRolesRequestDto = {},
+  ): Promise<GetRolesResponseDto> {
+    const {id: idArr, value: valueArr, description: descriptionArr} = query;
     const filterQuery: FilterQuery<IRoleModel> = {
       ...(idArr ? {_id: {$in: idArr}} : {}),
       ...(valueArr ? {value: {$in: valueArr}} : {}),
       ...(descriptionArr ? {description: {$in: descriptionArr}} : {}),
     };
-
     const foundRoles = await this.roleModel.find(filterQuery);
 
     return {
@@ -63,6 +61,7 @@ export class RoleService {
       ),
     };
   }
+
   async updateById(
     id: string,
     dto: UpdateRoleRequestDto,
@@ -73,6 +72,7 @@ export class RoleService {
 
     return {role: plainToInstance(RoleModel, updatedRole.toJSON<IRoleModel>())};
   }
+
   async deleteById(id: string): Promise<void> {
     await this.roleModel.findByIdAndDelete(id);
   }
