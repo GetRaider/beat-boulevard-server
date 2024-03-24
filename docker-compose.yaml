@@ -28,6 +28,16 @@ services:
     ports:
       - "9090:9090"
 
+#  s3:
+#    image: apachepulsar/s3mock
+#    environment:
+#      - validKmsKeys=valid-test-key-id
+#      - initialBuckets=photo
+#      - root=/s3Files
+#      - debug=true
+#    ports:
+#      - "9090:9090"
+
 #  ngrok:
 #    image: wernight/ngrok:armhf
 #    ports:

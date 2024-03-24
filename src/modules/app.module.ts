@@ -9,6 +9,7 @@ import {AuthModule} from "@modules/auth/auth.module";
 import {APP_FILTER} from "@nestjs/core";
 import {HttpExceptionFilter} from "../helpers/httpExceptionFilter.helper";
 import {S3Module} from "nestjs-s3";
+import {S3OwnModule} from "@modules/s3/s3.module";
 
 const {DB_BASE_URL, DB_CLUSTER_URL, DB_LOGIN, DB_PASSWORD} = processEnv;
 
@@ -30,13 +31,14 @@ const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
           secretAccessKey: "password",
         },
         region: "us-east-1",
-        endpoint: "https://humble-gladly-raven.ngrok-free.app",
+        endpoint: "https://60f2-77-255-144-23.ngrok-free.app",
         forcePathStyle: true,
       },
     }),
     AuthModule,
     UserModule,
     RoleModule,
+    S3OwnModule,
   ],
   providers: [{provide: APP_FILTER, useClass: HttpExceptionFilter}, Logger],
 })
