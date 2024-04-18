@@ -7,20 +7,12 @@ import {Logger} from "@nestjs/common";
 void (async function bootstrap() {
   try {
     const app = await NestFactory.create(AppModule);
+    const port = process.env.PORT || 8080;
 
-    const PORT = process.env.PORT || 8080;
     app.useGlobalFilters(new HttpExceptionFilter(new Logger()));
-    await app.listen(PORT, () =>
-      console.info(`Server has started on the ${PORT}`),
+    await app.listen(port, () =>
+      console.info(`Server has started on the ${port} port`),
     );
-    // todo Swagger:
-    // const config = new DocumentBuilder()
-    //   .setTitle("Beat-Boulevard")
-    //   .setDescription("Music platform")
-    //   .setVersion("1.0.0")
-    //   .build();
-    // const document = SwaggerModule.createDocument(app, config);
-    // SwaggerModule.setup("/api/docs", app, document);
   } catch (error) {
     console.error(`Server has not started due to: ${error.message}`);
   }
