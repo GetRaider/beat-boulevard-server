@@ -71,7 +71,7 @@ export class AuthService {
   ): Promise<GenerateTokenResponseDto> {
     const {id, login, roles} = dto;
     const token = this.jwtService.sign({login, id, roles});
-    console.log("AuthService", {token: token});
+
     return {
       token: plainToInstance(AuthModel, token),
     };

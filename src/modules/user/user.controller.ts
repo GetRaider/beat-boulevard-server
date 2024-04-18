@@ -35,7 +35,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  // To create user without credentials to test
+  // To create user without credentials during testing
   // @UseGuards(AuthGuard)
   async create(
     @Body() dto: CreateUserRequestDto,
