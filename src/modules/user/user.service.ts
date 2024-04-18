@@ -28,9 +28,11 @@ import {
   GetUserByLoginRequestDto,
   GetUserByLoginResponseDto,
 } from "@modules/user/dto/get-user-by-login.dto";
-import {Role} from "@interfaces/enums/roles.enums";
 import {RoleService} from "@modules/role/role.service";
-import {IRoleModel} from "@interfaces/models/role.model";
+import {processEnv} from "../../helpers/processEnv.helper";
+import {rolesIds} from "@interfaces/constants/roles.constants";
+
+const {IS_LOCALE} = processEnv;
 
 @Injectable()
 export class UserService {
@@ -43,17 +45,19 @@ export class UserService {
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const foundRolesDocument = await this.roleService.getByQuery({
-      id: ["e8bbf285-8544-4d1c-815c-a2b18546e384"],
+      id: [IS_LOCALE ? rolesIds.localDefault : rolesIds.devDefault],
     });
     const {login, password, roles = foundRolesDocument.roles, name, age} = dto;
     const encryptedPassword = await bcryptjs.hash(password, 5);
     const foundDocument = await this.getOneByLogin({login});
+
     if (foundDocument.user) {
       throw new HttpException(
         `User with ${login} login already exist`,
         HttpStatus.BAD_REQUEST,
       );
     }
+
     const newDocument = new this.userModel<IUserEntity>({
       _id: randomUUID(),
       login,
@@ -62,7 +66,9 @@ export class UserService {
       name,
       age,
     });
+
     const savedDocument = await newDocument.save();
+
     this.logger.warn(`Following user has been saved: ${savedDocument}`);
     return {
       user: plainToInstance(UserModel, savedDocument.toJSON<IUserModel>()),
@@ -101,6 +107,7 @@ export class UserService {
   ): Promise<GetUserByLoginResponseDto> {
     const {login} = dto;
     const foundDocument = await this.userModel.findOne({login});
+
     return {
       user: plainToInstance(UserModel, foundDocument?.toJSON<IUserModel>()),
     };

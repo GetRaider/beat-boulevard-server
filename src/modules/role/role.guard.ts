@@ -24,11 +24,13 @@ export class RoleGuard implements CanActivate {
         "roles",
         context.getHandler(),
       );
+
       if (!requiredRoles.length) {
         return true;
       }
+
       const request = context.switchToHttp().getRequest();
-      console.log("RoleGuard", request.user);
+
       return this.matchRoles(requiredRoles, request.user.roles);
     } catch (error) {
       this.logger.error({error: error.message}, "Failed to auth by roles");
@@ -45,6 +47,5 @@ export class RoleGuard implements CanActivate {
         return requiredRole === userRole.value;
       }),
     );
-    // return userRoles.some(userRole => requiredRoles.includes(userRole.value));
   }
 }
