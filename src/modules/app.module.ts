@@ -1,10 +1,9 @@
 import {APP_FILTER} from "@nestjs/core";
 import {ConfigModule} from "@nestjs/config";
-import {DynamicModule, Logger, Module} from "@nestjs/common";
+import {Logger, Module} from "@nestjs/common";
 import {S3Module} from "nestjs-s3";
 
 import {UserModule} from "@modules/user/user.module";
-import {processEnv} from "@helpers/processEnv.helper";
 import {RoleModule} from "@modules/role/role.module";
 import {AuthModule} from "@modules/auth/auth.module";
 import {HttpExceptionFilter} from "@helpers/httpExceptionFilter.helper";
