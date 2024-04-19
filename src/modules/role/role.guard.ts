@@ -42,8 +42,8 @@ export class RoleGuard implements CanActivate {
     requiredRoles: Array<Role>,
     userRoles: Array<IRoleModel>,
   ): boolean {
-    return requiredRoles.some(requiredRole =>
-      userRoles.some(userRole => {
+    return requiredRoles.some((requiredRole) =>
+      userRoles.some((userRole) => {
         return requiredRole === userRole.value;
       }),
     );

@@ -4,11 +4,7 @@ import {plainToInstance} from "class-transformer";
 import {InjectModel} from "@nestjs/mongoose";
 import {FilterQuery, Model} from "mongoose";
 
-import {
-  IRoleEntity,
-  RoleDocument,
-  RoleEntity,
-} from "@modules/role/schemas/role.schema";
+import {IRoleEntity, RoleDocument, RoleEntity} from "../../schemas/role.schema";
 import {
   CreateRoleRequestDto,
   CreateRoleResponseDto,
@@ -56,7 +52,7 @@ export class RoleService {
     const foundRoles = await this.roleModel.find(filterQuery);
 
     return {
-      roles: foundRoles.map(foundRole =>
+      roles: foundRoles.map((foundRole) =>
         plainToInstance(RoleModel, foundRole.toJSON<IRoleModel>()),
       ),
     };
@@ -70,7 +66,9 @@ export class RoleService {
       new: true,
     });
 
-    return {role: plainToInstance(RoleModel, updatedRole.toJSON<IRoleModel>())};
+    return {
+      role: plainToInstance(RoleModel, updatedRole.toJSON<IRoleModel>()),
+    };
   }
 
   async deleteById(id: string): Promise<void> {

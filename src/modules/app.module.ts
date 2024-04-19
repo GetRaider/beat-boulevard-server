@@ -1,25 +1,22 @@
-import {MongooseModule} from "@nestjs/mongoose";
+import {APP_FILTER} from "@nestjs/core";
 import {ConfigModule} from "@nestjs/config";
-import {Logger, Module} from "@nestjs/common";
+import {DynamicModule, Logger, Module} from "@nestjs/common";
+import {S3Module} from "nestjs-s3";
 
 import {UserModule} from "@modules/user/user.module";
-import {processEnv} from "../helpers/processEnv.helper";
+import {processEnv} from "@helpers/processEnv.helper";
 import {RoleModule} from "@modules/role/role.module";
 import {AuthModule} from "@modules/auth/auth.module";
-import {APP_FILTER} from "@nestjs/core";
-import {HttpExceptionFilter} from "../helpers/httpExceptionFilter.helper";
-import {S3Module} from "nestjs-s3";
+import {HttpExceptionFilter} from "@helpers/httpExceptionFilter.helper";
 import {S3OwnModule} from "@modules/s3/s3.module";
-import {configHelper} from "../helpers/config.helper";
-
-const {IS_LOCALE} = processEnv;
+import {configHelper} from "@helpers/config.helper";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
-    configHelper.getMongooseModule(IS_LOCALE),
+    configHelper.getMongooseModule(),
     S3Module.forRoot({
       config: {
         credentials: {

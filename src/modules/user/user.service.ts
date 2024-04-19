@@ -5,11 +5,7 @@ import {plainToInstance} from "class-transformer";
 import {InjectModel} from "@nestjs/mongoose";
 import bcryptjs from "bcryptjs";
 
-import {
-  IUserEntity,
-  UserDocument,
-  UserEntity,
-} from "@modules/user/schemas/user.schema";
+import {IUserEntity, UserDocument, UserEntity} from "@schemas/user.schema";
 import {UserModel} from "@modules/user/models/user.model";
 import {IUserModel} from "@interfaces/models/user.model";
 import {
@@ -29,8 +25,8 @@ import {
   GetUserByLoginResponseDto,
 } from "@modules/user/dto/get-user-by-login.dto";
 import {RoleService} from "@modules/role/role.service";
-import {processEnv} from "../../helpers/processEnv.helper";
-import {rolesIds} from "@interfaces/constants/roles.constants";
+import {processEnv} from "@helpers/processEnv.helper";
+import {rolesIds} from "@constants/roles.constants";
 
 const {IS_LOCALE} = processEnv;
 
@@ -96,7 +92,7 @@ export class UserService {
 
     const foundDocuments = await this.userModel.find(filterQuery);
     return {
-      users: foundDocuments.map(foundDocument =>
+      users: foundDocuments.map((foundDocument) =>
         plainToInstance(UserModel, foundDocument.toJSON<IUserModel>()),
       ),
     };

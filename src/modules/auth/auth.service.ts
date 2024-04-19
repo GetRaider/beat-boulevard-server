@@ -88,7 +88,9 @@ export class AuthService {
     );
 
     if (!user || !isPasswordEqual) {
-      throw new UnauthorizedException({message: "Incorrect login or password"});
+      throw new UnauthorizedException({
+        message: "Incorrect login or password",
+      });
     }
 
     return {

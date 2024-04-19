@@ -1,13 +1,20 @@
-import {Injectable, Logger} from '@nestjs/common';
+import {Injectable, Logger} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {randomUUID} from "crypto";
 import {plainToInstance} from "class-transformer";
 
-import {ITrackEntity, TrackDocument, TrackEntity} from "@modules/track/schemas/track.schema";
+import {
+  ITrackEntity,
+  TrackDocument,
+  TrackEntity,
+} from "../../schemas/track.schema";
 import {TrackModel} from "@modules/track/models/track.model";
 import {ITrackModel} from "@interfaces/models/track.model";
-import {CreateTrackRequestDto, CreateTrackResponseDto} from "@modules/track/dto/create-track.dto";
+import {
+  CreateTrackRequestDto,
+  CreateTrackResponseDto,
+} from "@modules/track/dto/create-track.dto";
 
 @Injectable()
 export class TrackService {
@@ -23,11 +30,13 @@ export class TrackService {
       _id: randomUUID(),
       title,
       file,
-      album
+      album,
     });
 
     const savedRole = await newRole.save();
     this.logger.warn(`Following photo has been saved: ${savedRole}`);
-    return {track: plainToInstance(TrackModel, savedRole.toJSON<ITrackModel>())};
+    return {
+      track: plainToInstance(TrackModel, savedRole.toJSON<ITrackModel>()),
+    };
   }
 }
