@@ -1,10 +1,12 @@
 # compiled output
 /dist
 /node_modules
-.env
-package-lock.json
 /kms
 /mongo
+.env
+.local.env
+.dev.env
+package-lock.json
 
 # Logs
 logs

@@ -1,7 +1,10 @@
 import {IsObject, IsOptional, IsString, ValidateNested} from "class-validator";
 import {Type} from "class-transformer";
 
-import {ICreateTrackArgs, ICreateTrackResult} from "@interfaces/dto/track/create-track.dto";
+import {
+  ICreateTrackArgs,
+  ICreateTrackResult,
+} from "@interfaces/dto/track/create-track.dto";
 import {ITrackModel} from "@interfaces/models/track.model";
 import {TrackModel} from "@modules/track/models/track.model";
 

@@ -4,8 +4,8 @@ import {UserService} from "@modules/user/user.service";
 import {MongooseModule} from "@nestjs/mongoose";
 import {AuthModule} from "@modules/auth/auth.module";
 import {RoleService} from "@modules/role/role.service";
-import {RoleEntity, RoleSchema} from "@modules/role/schemas/role.schema";
-import {UserEntity, UserSchema} from "@modules/user/schemas/user.schema";
+import {RoleEntity, RoleSchema} from "../../schemas/role.schema";
+import {UserEntity, UserSchema} from "../../schemas/user.schema";
 
 @Module({
   imports: [
