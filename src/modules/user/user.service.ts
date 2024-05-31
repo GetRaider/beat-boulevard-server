@@ -28,7 +28,7 @@ import {RoleService} from "@modules/role/role.service";
 import {processEnv} from "@helpers/processEnv.helper";
 import {rolesIds} from "@constants/roles.constants";
 
-const {IS_LOCALE} = processEnv;
+const {IS_LOCAL} = processEnv;
 
 @Injectable()
 export class UserService {
@@ -41,7 +41,7 @@ export class UserService {
 
   async create(dto: CreateUserRequestDto): Promise<CreateUserResponseDto> {
     const foundRolesDocument = await this.roleService.getByQuery({
-      id: [IS_LOCALE ? rolesIds.localDefault : rolesIds.devDefault],
+      id: [IS_LOCAL === "true" ? rolesIds.localDefault : rolesIds.devDefault],
     });
     const {login, password, roles = foundRolesDocument.roles, name, age} = dto;
     const encryptedPassword = await bcryptjs.hash(password, 5);

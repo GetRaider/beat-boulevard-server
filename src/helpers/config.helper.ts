@@ -11,15 +11,15 @@ const {
   MONGODB_USERNAME,
   MONGODB_PASSWORD,
   MONGODB_HOST_URL,
-  IS_LOCALE,
+  IS_LOCAL,
 } = processEnv;
 
-const encodedUsername = encodeURIComponent(`${DB_LOGIN}`);
-const encodedPassword = encodeURIComponent(`${DB_PASSWORD}`);
+const encodedUsername = encodeURIComponent(DB_LOGIN);
+const encodedPassword = encodeURIComponent(DB_PASSWORD);
 
 export const configHelper = {
   getMongooseModule(): DynamicModule {
-    return IS_LOCALE
+    return IS_LOCAL === "true"
       ? MongooseModule.forRoot(`mongodb://${MONGODB_HOST_URL}:27017/`, {
           dbName: "locale",
           auth: {
