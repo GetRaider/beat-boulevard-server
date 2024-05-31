@@ -3,7 +3,7 @@ import {config} from "dotenv";
 config();
 
 interface IProcessEnvHelper {
-  IS_LOCALE: boolean;
+  IS_LOCAL: string;
   PORT: string;
   DB_BASE_URL: string;
   DB_CLUSTER_URL: string;
