@@ -43,8 +43,7 @@ export class UserController {
     return this.userService.create(dto);
   }
 
-  @Roles(Role.admin)
-  @UseGuards(AuthGuard, RoleGuard)
+  @UseGuards(AuthGuard)
   @Get()
   async get(@Query() query: GetUsersRequestDto): Promise<GetUsersResponseDto> {
     return this.userService.getByQuery(query);
