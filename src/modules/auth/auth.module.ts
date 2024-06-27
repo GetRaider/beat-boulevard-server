@@ -3,7 +3,7 @@ import {AuthController} from "./auth.controller";
 import {AuthService} from "./auth.service";
 import {UserModule} from "@modules/user/user.module";
 import {JwtModule} from "@nestjs/jwt";
-import {processEnv} from "../../helpers/processEnv.helper";
+import {processEnv} from "@helpers/processEnv.helper";
 
 const {SECRET} = processEnv;
 
